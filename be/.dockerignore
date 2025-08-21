@@ -1,0 +1,15 @@
+# Ignore everything that shouldn't be copied into the image context
+.git
+.gitignore
+node_modules
+vendor
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+.env
+.env.*
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
