@@ -14,8 +14,9 @@ function login() {
     email: email.value,
     password: password.value,
   })
-    .then(() => {
+    .then(data => {
       success.value = 'Logged in!'
+      localStorage.setItem('access_token', data.data.access_token)
     })
     .catch((e: any) => {
       error.value = e.response?.data?.error || e.response?.data?.message || 'Login failed'
