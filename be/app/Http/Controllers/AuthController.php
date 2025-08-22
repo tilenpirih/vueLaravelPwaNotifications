@@ -94,4 +94,23 @@ class AuthController extends Controller
         ]);
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function me(Request $request)
+    {
+        $userId = (int) $request->attributes->get('auth_user_id', 0);
+        if (!$userId) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ]);
+    }
 }
