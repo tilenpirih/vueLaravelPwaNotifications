@@ -30,7 +30,6 @@ Route::post('/auth/register', function(Request $request) {
     return response()->json(['user' => $user]);
 });
 
-
 Route::post('/auth/login', function(Request $request) {
     $data = $request->validate([
         'email' => 'required|email',
@@ -41,9 +40,4 @@ Route::post('/auth/login', function(Request $request) {
     }
     $user = Auth::user();
     return response()->json(['user' => $user]);
-});
-
-// Private endpoint to get authenticated user info
-Route::middleware('auth')->get('/auth/me', function(Request $request) {
-    return response()->json(['user' => $request->user()]);
 });
