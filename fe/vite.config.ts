@@ -16,6 +16,7 @@ export default defineConfig({
       srcDir: 'src',
       filename: 'sw.ts',
       injectRegister: false,
+      includeAssets: ['favicon.ico'],
       devOptions: {
         enabled: true,
         type: 'module',
@@ -28,7 +29,25 @@ export default defineConfig({
         background_color: '#ffffff',
         theme_color: '#42b883',
         icons: [
-          // Add your own icons in /public if available
+          // Using uploaded icons from /public
+          {
+            src: '/vue_logo.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: '/vue_logo.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: '/vue_logo.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
       },
       workbox: {
