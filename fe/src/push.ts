@@ -47,7 +47,3 @@ export async function unsubscribeFromPush() {
     await sub.unsubscribe()
   }
 }
-
-export async function sendTestPush() {
-  await api.post('/push/send-test')
-}

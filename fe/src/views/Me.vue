@@ -4,7 +4,6 @@ import api from '@/api'
 import {
   getExistingSub,
   getPublicKey,
-  sendTestPush,
   subscribeToPush,
   unsubscribeFromPush,
 } from '@/push'
@@ -19,6 +18,12 @@ const loading = ref(false)
 const error = ref<string>('')
 
 const canSubscribe = computed(() => swSupported && permission.value !== 'denied')
+
+const data = ref<{ title: string, body: string, url: string }>({
+  title: 'New Notification',
+  body: 'You have a new message.',
+  url: 'https://google.com', // it can also be relative path like /login
+})
 
 async function refreshSubState() {
   try {
@@ -71,7 +76,11 @@ async function onSendTest() {
   loading.value = true
   error.value = ''
   try {
-    await sendTestPush()
+    await api.post('/push/send-test', {
+      title: data.value.title,
+      body: data.value.body,
+      data: { url: data.value.url },
+    })
   }
   catch (e: any) {
     error.value = e?.message || 'Send test failed'
@@ -137,6 +146,14 @@ onMounted(async () => {
       <button :disabled="!isSubscribed || loading" @click="onSendTest">
         Send Test
       </button>
+    </div>
+    <div>
+      Title<br>
+      <input v-model="data.title" placeholder="Title"><br>
+      Body<br>
+      <input v-model="data.body" placeholder="Body"><br>
+      URL<br>
+      <input v-model="data.url" placeholder="URL"><br>
     </div>
     <p><strong>Status:</strong> {{ isSubscribed ? 'Subscribed' : 'Not subscribed' }}</p>
     <p v-if="error" style="color:#b00">

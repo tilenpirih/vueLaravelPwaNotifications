@@ -26,14 +26,13 @@ self.addEventListener('push', event => {
       return { body: event.data?.text() }
     }
   })()
-
   const title = data.title || 'New Notification'
   const body = data.body || 'You have a new message.'
-  const url = data.url || '/'
+  const notificationData = data.data
 
   const options: NotificationOptions = {
     body,
-    data: { url },
+    data: notificationData,
     icon: '/favicon.ico',
     badge: '/favicon.ico',
   }
@@ -48,14 +47,31 @@ self.addEventListener('notificationclick', event => {
   event.waitUntil(
     (async () => {
       const allClients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-      for (const client of allClients) {
-        const win = client as WindowClient
-        if (win.url.includes(new URL(url, self.location.origin).pathname)) {
-          await win.focus()
-          return
-        }
+
+      // Check if the URL is external (different origin)
+      const isExternalUrl = url.startsWith('http') && !url.startsWith(self.location.origin)
+
+      if (isExternalUrl) {
+        // For external URLs, just open a new window/tab
+        await self.clients.openWindow(url)
       }
-      await self.clients.openWindow(url)
+      else {
+        // For internal URLs, try to find existing client or navigate
+        const targetPath = url.startsWith('/') ? url : new URL(url, self.location.origin).pathname
+
+        for (const client of allClients) {
+          const win = client as WindowClient
+          if (win.url.includes(targetPath) || win.url.includes(self.location.origin)) {
+            await win.focus()
+            // Navigate to the new URL if it's different
+            if (!win.url.includes(targetPath)) {
+              await win.navigate(url)
+            }
+            return
+          }
+        }
+        await self.clients.openWindow(url)
+      }
     })(),
   )
 })
