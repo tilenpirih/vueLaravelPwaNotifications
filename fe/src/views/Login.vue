@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import router from '@/router'
 import api from '../api'
 
 const email = ref('')
@@ -17,6 +18,7 @@ function login() {
     .then(data => {
       success.value = 'Logged in!'
       localStorage.setItem('access_token', data.data.access_token)
+      router.push('/me')
     })
     .catch((e: any) => {
       error.value = e.response?.data?.error || e.response?.data?.message || 'Login failed'
