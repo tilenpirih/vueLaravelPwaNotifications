@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function webPushSubscriptions()
+    {
+        return $this->hasMany(WebPushSubscription::class);
+    }
 }
