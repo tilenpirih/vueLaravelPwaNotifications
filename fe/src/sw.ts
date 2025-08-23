@@ -6,9 +6,6 @@
 
 declare const self: ServiceWorkerGlobalScope & typeof globalThis
 
-// Precache manifest will be injected here by Workbox
-const _precacheManifest = (self as unknown as { __WB_MANIFEST: unknown }).__WB_MANIFEST
-
 self.addEventListener('install', () => {
   // Activate immediately on install
   self.skipWaiting()

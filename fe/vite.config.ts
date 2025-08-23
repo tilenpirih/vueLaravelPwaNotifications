@@ -31,19 +31,19 @@ export default defineConfig({
         icons: [
           // Using uploaded icons from /public
           {
-            src: '/vue_logo.png',
+            src: '/vue_192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/vue_logo.png',
+            src: '/vue_512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/vue_logo.png',
+            src: '/vue_512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
